@@ -1,0 +1,42 @@
+version: "3.2"
+services:
+
+  # auth:
+    # definition of auth service
+
+  # notifications:
+    # definition of notifications service
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=backend
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - mongo_data:/var/lib/mongo
+    ports:
+      - 27017:27017
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq/
+    networks:
+      - rabbitmq_bridge_network
+
+
+volumes:
+  rabbitmq_data:
+  rabbitmq_log:
+  mongo_data:
+
+networks:
+  rabbitmq_bridge_network:
+    driver: bridge
