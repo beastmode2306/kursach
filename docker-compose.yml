@@ -1,11 +1,21 @@
 version: "3.2"
 services:
-
   # auth:
-    # definition of auth service
+  # definition of auth service
 
-  # notifications:
-    # definition of notifications service
+  notification:
+    build: ./notification
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app/
+    environment:
+      - SERVICE=notification
+    env_file:
+      - ./notification/.env
+    depends_on:
+      - mongo
+      - rabbitmq
 
   mongo:
     image: mongo
@@ -21,7 +31,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
+    container_name: "rabbitmq"
     ports:
       - 5672:5672
       - 15672:15672
@@ -30,7 +40,6 @@ services:
       - rabbitmq_log:/var/log/rabbitmq/
     networks:
       - rabbitmq_bridge_network
-
 
 volumes:
   rabbitmq_data:
