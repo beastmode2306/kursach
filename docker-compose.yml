@@ -1,19 +1,19 @@
 version: "3.2"
 services:
-  # auth:
-  # definition of auth service
-
   notification:
-    build: ./notification
-    ports:
-      - "3001:3001"
+    build:
+      context: ./services
+      dockerfile: ./notification/Dockerfile
     volumes:
-      - .:/app/
+      - .:/app/notification
     environment:
       - SERVICE=notification
-      - PORT=3001
+      - RABBIT_HOST=${RABBIT_HOST}
+      - RABBIT_PORT=${RABBIT_PORT}
+      - RABBIT_USER=${RABBIT_USER}
+      - RABBIT_PASSWORD=${RABBIT_PASSWORD}
     env_file:
-      - ./notification/.env
+      - ./services/notification/.env
     depends_on:
       - mongo
       - rabbitmq
@@ -21,7 +21,9 @@ services:
       - rabbitmq_bridge_network
 
   api-gateway:
-    build: ./api-gateway
+    build:
+      context: ./services
+      dockerfile: ./api-gateway/Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -29,8 +31,12 @@ services:
     environment:
       - SERVICE=api-gateway
       - PORT=3000
+      - RABBIT_HOST=${RABBIT_HOST}
+      - RABBIT_PORT=${RABBIT_PORT}
+      - RABBIT_USER=${RABBIT_USER}
+      - RABBIT_PASSWORD=${RABBIT_PASSWORD}
     env_file:
-      - ./api-gateway/.env
+      - ./services/api-gateway/.env
     restart: on-failure
     depends_on:
       - rabbitmq

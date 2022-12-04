@@ -1,15 +1,14 @@
 {
-  "name": "api-gateway",
+  "name": "notification",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.10.3"
+    "dotenv": "^16.0.3"
   }
 }
