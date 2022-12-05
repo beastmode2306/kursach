@@ -1,5 +1,5 @@
 const amqplib = require("amqplib/channel_api");
-const amqpHandler = require("./lib");
+const amqpHandler = require("./lib/utils/index.js");
 const dotenv = require("dotenv");
 dotenv.config();
 
